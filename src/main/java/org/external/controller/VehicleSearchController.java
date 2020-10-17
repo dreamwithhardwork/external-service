@@ -34,7 +34,8 @@ public class VehicleSearchController {
 
     @GetMapping("/color/{color}")
     List<Vehicle> getAllCarsByColor(@PathVariable String color, @RequestParam("status") Optional<String> status){
-        return searchRepository.findByColorAndAutomobileType(color,type);
+        return status.isEmpty()?searchRepository.findByColorAndAutomobileType(color,type):
+                searchRepository.findByColorAndAutomobileTypeAndStatus(color,type,status.get());
     }
 
     @GetMapping("/model/{model}")
