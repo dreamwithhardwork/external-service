@@ -1,21 +1,20 @@
-package org.external.search;
-
+package org.external.controller;
 
 import org.models.core.dao.SearchFilterRepository;
 import org.models.core.dao.SearchRepository;
 import org.models.core.domain.Vehicle;
 import org.models.core.domain.report.AutomobileType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@RequestMapping("/cars")
-@RestController
-public class VehicleController {
+public class VehicleSearchController {
 
 
     @Autowired
@@ -31,6 +30,7 @@ public class VehicleController {
     List<Vehicle> getAllCars(){
         return searchRepository.findByAutomobileType(type);
     }
+
 
     @GetMapping("/color/{color}")
     List<Vehicle> getAllCarsByColor(@PathVariable String color){
@@ -67,14 +67,17 @@ public class VehicleController {
     @GetMapping("/filter")
     List<Vehicle> getAllCarsByFilter(@RequestParam("color") Optional<String> color, @RequestParam("year") Optional<String> year,
                                      @RequestParam("make") Optional<String> make, @RequestParam("model") Optional<String> model,
-                                     @RequestParam("price") Optional<String> price, @RequestParam("mileage") Optional<String> mileage){
+                                     @RequestParam("fromPrice") Optional<String> minPrice, @RequestParam("toPrice") Optional<String> maxPrice ,
+                                     @RequestParam("fromMileage") Optional<String> minMileage, @RequestParam("toMileage") Optional<String> maxMileage){
         Map<String,String> filter = new HashMap<>();
         filter.put("color",color.orElse(null));
         filter.put("year",year.orElse(null));
         filter.put("make",make.orElse(null));
         filter.put("model",model.orElse(null));
-        filter.put("price",make.orElse(null));
-        filter.put("mileage",model.orElse(null));
+        filter.put("minPrice",minPrice.orElse(null));
+        filter.put("maxPrice",maxPrice.orElse(null));
+        filter.put("minMileage",minMileage.orElse(null));
+        filter.put("maxMileage",maxMileage.orElse(null));
         filter.put("automobileType","CAR");
 
         return searchFilterRepository.getVehiclesByFilter(filter);
