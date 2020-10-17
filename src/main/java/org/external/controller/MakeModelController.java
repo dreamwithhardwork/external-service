@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/type")
+@RequestMapping("/makemodel")
 @RestController
 @Validated
 public class MakeModelController {

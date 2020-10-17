@@ -17,8 +17,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.logical.models:logical-models:0.0.1'
-	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
