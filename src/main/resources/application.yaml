@@ -8,6 +8,24 @@ automobile:
   make:
     - hyundai
     - kia
+    - Chevrolet
+    - Datsun
+    - Fiat
+    - Ford
+    - Honda
+    - Isuzu
+    - Jeep
+    - Mahindra
+    - Maruti Suzuki
+    - MG Motors
+    - Mitsubishi
+    - Nissan
+    - Renault
+    - Skoda
+    - Ssangyong
+    - Tata
+    - Toyata
+    - Volkswagen
   models:
     hyundai:
       - verna
@@ -15,3 +33,5 @@ automobile:
     kia:
       - seltos
       - sonet
+server:
+  port: 8080
