@@ -4,7 +4,10 @@ import org.models.core.dao.SearchFilterRepository;
 import org.models.core.dao.SearchRepository;
 import org.models.core.domain.Vehicle;
 import org.models.core.domain.report.AutomobileType;
+import org.models.core.enums.VehicleStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -22,54 +25,57 @@ public class VehicleSearchController {
 
     private AutomobileType type = AutomobileType.CAR;
 
-
-    @GetMapping("/all")
-    List<Vehicle> getAllVehicles(@RequestParam("type") Optional<AutomobileType> type){
-        List<Vehicle> response= new ArrayList<>();
-        if(type.isEmpty()){
-            response.addAll(searchRepository.findByAutomobileType(AutomobileType.BIKE));
-            response.addAll(searchRepository.findByAutomobileType(AutomobileType.CAR));
+    private VehicleStatus getVehicleStatus(VehicleStatus vehicleStatus){
+        if(SecurityContextHolder.getContext().getAuthentication().getAuthorities()==null){
+            vehicleStatus = VehicleStatus.UNSOLD;
         }
         else{
-            response.addAll(searchRepository.findByAutomobileType(type.get()));
+            List<GrantedAuthority> grantedAuthorities = (List<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+            if(!grantedAuthorities.get(0).getAuthority().equals("ROLE_ADMIN")){
+                vehicleStatus = VehicleStatus.UNSOLD;
+            }
         }
+        return   vehicleStatus;
+    }
+
+
+    @GetMapping("/all")
+    List<Vehicle> getAllVehicles(@RequestParam("type") AutomobileType type){
+        List<Vehicle> response= new ArrayList<>();
+        response.addAll(searchRepository.findByAutomobileTypeAndStatus(type,VehicleStatus.UNSOLD));
         return response;
     }
 
 
     @GetMapping("/color/{color}")
-    List<Vehicle> getAllByColor(@PathVariable String color, @RequestParam("status") Optional<String> status,@RequestParam("type") AutomobileType type){
-        return status.isEmpty()?searchRepository.findByColorAndAutomobileType(color,type):
-                searchRepository.findByColorAndAutomobileTypeAndStatus(color,type,status.get());
+    List<Vehicle> getAllByColor(@PathVariable String color,@RequestParam("type") AutomobileType type){
+        return searchRepository.findByColorAndAutomobileTypeAndStatus(color,type,VehicleStatus.UNSOLD);
     }
 
     @GetMapping("/model/{model}")
-    List<Vehicle> getAllByModel(@PathVariable String model,@RequestParam("status") Optional<String> status, @RequestParam("type") AutomobileType type){
-        return status.isEmpty()? searchRepository.findByModelAndAutomobileType(model,type):
-                searchRepository.findByModelAndAutomobileTypeAndStatus(model,type,status.get());
+    List<Vehicle> getAllByModel(@PathVariable String model, @RequestParam("type") AutomobileType type){
+        return searchRepository.findByModelAndAutomobileTypeAndStatus(model,type,VehicleStatus.UNSOLD);
     }
 
     @GetMapping("/year/{year}")
-    List<Vehicle> getAllByYear(@PathVariable Integer year,@RequestParam("status") Optional<String> status, @RequestParam("type") AutomobileType type){
-        return status.isEmpty()? searchRepository.findByMakeYearAndType(year,type):
-                searchRepository.findByMakeYearAndTypeAndStatus(year,type,status.get());
+    List<Vehicle> getAllByYear(@PathVariable Integer year, @RequestParam("type") AutomobileType type){
+        return searchRepository.findByMakeYearAndTypeAndStatus(year,type,VehicleStatus.UNSOLD);
     }
 
     @GetMapping("/make/{make}")
-    List<Vehicle> getAllByMake(@PathVariable String make,@RequestParam("status") Optional<String> status, @RequestParam("type") AutomobileType type){
-        return status.isEmpty()? searchRepository.findByMakeAndAutomobileType(make,type):
-                searchRepository.findByMakeAndAutomobileTypeAndStatus(make,type,status.get());
+    List<Vehicle> getAllByMake(@PathVariable String make,@RequestParam("status") Optional<VehicleStatus> status, @RequestParam("type") AutomobileType type){
+        return searchRepository.findByMakeAndAutomobileTypeAndStatus(make,type, VehicleStatus.UNSOLD);
     }
 
     @GetMapping("/mileage")
-    List<Vehicle> getAllCarsByMileage(@RequestParam("from") Integer from, @RequestParam("to") Integer to,@RequestParam("status") Optional<String> status,
+    List<Vehicle> getAllCarsByMileage(@RequestParam("from") Integer from, @RequestParam("to") Integer to,@RequestParam("status") Optional<VehicleStatus> status,
                                       @RequestParam("type") AutomobileType type){
         to = to==null?2022:to;
         return searchRepository.findByMileageBetweenAndAutomobileType(from,to,type);
     }
 
     @GetMapping("/price")
-    List<Vehicle> getAllByPrice(@RequestParam("from") Float from, @RequestParam("to") Float to,@RequestParam("status") Optional<String> status, @RequestParam("type") AutomobileType type){
+    List<Vehicle> getAllByPrice(@RequestParam("from") Float from, @RequestParam("to") Float to,@RequestParam("status") Optional<VehicleStatus> status, @RequestParam("type") AutomobileType type){
         to = to == null?Float.MAX_VALUE:to;
         return searchRepository.findByPriceBetweenAndAutomobileType(from,to,type);
     }
@@ -79,7 +85,7 @@ public class VehicleSearchController {
                                      @RequestParam("make") Optional<String> make, @RequestParam("model") Optional<String> model,
                                      @RequestParam("fromPrice") Optional<String> minPrice, @RequestParam("toPrice") Optional<String> maxPrice ,
                                      @RequestParam("fromMileage") Optional<String> minMileage, @RequestParam("toMileage") Optional<String> maxMileage
-                                      ,@RequestParam("status") Optional<String> status, @RequestParam("type") AutomobileType type){
+                                      , @RequestParam("type") AutomobileType type){
         Map<String,String> filter = new HashMap<>();
         filter.put("color",color.orElse(null));
         filter.put("year",year.orElse(null));
@@ -89,8 +95,8 @@ public class VehicleSearchController {
         filter.put("maxPrice",maxPrice.orElse(null));
         filter.put("minMileage",minMileage.orElse(null));
         filter.put("maxMileage",maxMileage.orElse(null));
-        filter.put("status",status.orElse(null));
         filter.put("type",type.toString());
+        filter.put("status",VehicleStatus.UNSOLD.toString());
         return searchFilterRepository.getVehiclesByFilter(filter);
     }
 

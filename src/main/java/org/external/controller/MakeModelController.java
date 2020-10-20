@@ -24,7 +24,7 @@ public class MakeModelController {
     @Autowired
     VehicleProperties vehicleProperties;
 
-    @GetMapping("all/make")
+    @GetMapping("/all/make")
     public List<String>  gatAllMakeTypes(){
         return vehicleProperties.getMake();
     }
