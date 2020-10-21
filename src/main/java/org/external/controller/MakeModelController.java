@@ -29,11 +29,6 @@ public class MakeModelController {
         return vehicleProperties.getMake();
     }
 
-    @GetMapping("/all/models")
-    public Map<String,List<String>> getAllModels(){
-        return vehicleProperties.getModels();
-    }
-
     @GetMapping("/models")
     public List<String> getModelsByMake(@RequestParam("make") @Valid @MakeValidator String make){
         return vehicleProperties.getModels().get(make);
