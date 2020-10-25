@@ -1,6 +1,7 @@
 package org.external.controller;
 
 
+import org.models.core.domain.Make;
 import org.models.core.properies.VehicleProperties;
 import org.models.core.validators.MakeValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RequestMapping("/makemodel")
 @RestController
@@ -25,13 +27,13 @@ public class MakeModelController {
     VehicleProperties vehicleProperties;
 
     @GetMapping("/all/make")
-    public List<String>  gatAllMakeTypes(){
-        return vehicleProperties.getMake();
+    public Set<String>  gatAllMakeTypes(){
+        return  vehicleProperties.getMakes().keySet();
     }
 
     @GetMapping("/models")
-    public List<String> getModelsByMake(@RequestParam("make") @Valid @MakeValidator String make){
-        return vehicleProperties.getModels().get(make);
+    public Set<String> getModelsByMake(@RequestParam("make") @Valid @MakeValidator String make){
+        return vehicleProperties.getMakes().get(make).getModels() ;
     }
 
 }
