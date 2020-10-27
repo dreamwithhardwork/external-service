@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequestMapping("/makemodel")
 @RestController
@@ -28,12 +30,15 @@ public class MakeModelController {
 
     @GetMapping("/all/make")
     public Set<String>  gatAllMakeTypes(){
-        return  vehicleProperties.getMakes().keySet();
+        return  vehicleProperties.getMakes()==null?new HashSet<>():
+                vehicleProperties.getMakes().keySet();
     }
 
     @GetMapping("/models")
     public Set<String> getModelsByMake(@RequestParam("make") @Valid @MakeValidator String make){
-        return vehicleProperties.getMakes().get(make).getModels() ;
+        if(vehicleProperties.getMakes()==null || vehicleProperties.getMakes().get(make) ==null)
+            return new HashSet<>();
+        return vehicleProperties.getMakes().get(make).getModels().stream().map(model -> model.getName()).collect(Collectors.toSet());
     }
 
 }
