@@ -30,15 +30,23 @@ public class MakeModelController {
 
     @GetMapping("/all/make")
     public Set<String>  gatAllMakeTypes(){
-        return  vehicleProperties.getMakes()==null?new HashSet<>():
-                vehicleProperties.getMakes().keySet();
+        return  vehicleProperties.getMakemodelvariants()==null?new HashSet<>():
+                vehicleProperties.getMakemodelvariants().keySet();
     }
 
     @GetMapping("/models")
-    public Set<String> getModelsByMake(@RequestParam("make") @Valid @MakeValidator String make){
-        if(vehicleProperties.getMakes()==null || vehicleProperties.getMakes().get(make) ==null)
+    public Set<String> getModelsByMake(@RequestParam("make") String make){
+        if(vehicleProperties.getMakemodelvariants()==null || vehicleProperties.getMakemodelvariants().get(make) ==null)
             return new HashSet<>();
-        return vehicleProperties.getMakes().get(make).getModels().stream().map(model -> model.getName()).collect(Collectors.toSet());
+        return vehicleProperties.getMakemodelvariants().get(make).keySet();
+    }
+
+    @GetMapping("/variants")
+    public Set<String> getVariantsByModel(@RequestParam("model") String model, @RequestParam("make") String make){
+        if(vehicleProperties.getMakemodelvariants()==null || vehicleProperties.getMakemodelvariants().get(make) ==null ||
+        vehicleProperties.getMakemodelvariants().get(make).get(model)==null)
+            return new HashSet<>();
+        return vehicleProperties.getMakemodelvariants().get(make).get(model);
     }
 
 }
