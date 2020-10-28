@@ -1,7 +1,13 @@
 package org.external.controller;
 
 
+import org.models.core.dao.CustomRepositories;
+import org.models.core.dao.MakeRepository;
+import org.models.core.dao.ModelRepository;
+import org.models.core.dao.VariantRepository;
 import org.models.core.domain.Make;
+import org.models.core.domain.Model;
+import org.models.core.domain.Variant;
 import org.models.core.properies.VehicleProperties;
 import org.models.core.validators.MakeValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,27 +32,27 @@ public class MakeModelController {
 
 
     @Autowired
-    VehicleProperties vehicleProperties;
+    MakeRepository makeRepository;
+
+    @Autowired
+    ModelRepository modelRepository;
+
+    @Autowired
+    VariantRepository variantRepository;
 
     @GetMapping("/all/make")
-    public Set<String>  gatAllMakeTypes(){
-        return  vehicleProperties.getMakemodelvariants()==null?new HashSet<>():
-                vehicleProperties.getMakemodelvariants().keySet();
+    public List<Make>  gatAllMakeTypes(){
+        return  makeRepository.findAll();
     }
 
     @GetMapping("/models")
-    public Set<String> getModelsByMake(@RequestParam("make") String make){
-        if(vehicleProperties.getMakemodelvariants()==null || vehicleProperties.getMakemodelvariants().get(make) ==null)
-            return new HashSet<>();
-        return vehicleProperties.getMakemodelvariants().get(make).keySet();
+    public List<Model> getModelsByMake(@RequestParam("make") String make){
+      return modelRepository.findByMake(make);
     }
 
     @GetMapping("/variants")
-    public Set<String> getVariantsByModel(@RequestParam("model") String model, @RequestParam("make") String make){
-        if(vehicleProperties.getMakemodelvariants()==null || vehicleProperties.getMakemodelvariants().get(make) ==null ||
-        vehicleProperties.getMakemodelvariants().get(make).get(model)==null)
-            return new HashSet<>();
-        return vehicleProperties.getMakemodelvariants().get(make).get(model);
+    public List<Variant> getVariantsByModel(@RequestParam("model") String model){
+        return variantRepository.findByModel(model);
     }
 
 }
