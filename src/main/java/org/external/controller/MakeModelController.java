@@ -41,6 +41,9 @@ public class MakeModelController {
     @Autowired
     CustomRepositories customRepositories;
 
+    @Autowired
+    VehicleProperties properties;
+
     @GetMapping("/all/make")
     public List<Make>  gatAllMakeTypes(){
         return  makeRepository.findAll();
@@ -54,6 +57,11 @@ public class MakeModelController {
     @GetMapping("/all")
     public List<Model> getMakeByName(){
         return customRepositories.getAllModels();
+    }
+
+    @GetMapping("/make-model")
+    public Map<String, Map<String, Set<String>>> getMakeModelList(){
+        return properties.getMakemodelvariants();
     }
 
     @PutMapping
