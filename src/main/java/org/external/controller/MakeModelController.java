@@ -7,15 +7,13 @@ import org.models.core.dao.ModelRepository;
 import org.models.core.dao.VariantRepository;
 import org.models.core.domain.Make;
 import org.models.core.domain.Model;
+import org.models.core.domain.ModelsFilter;
 import org.models.core.domain.Variant;
 import org.models.core.properies.VehicleProperties;
 import org.models.core.validators.MakeValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
@@ -40,16 +38,28 @@ public class MakeModelController {
     @Autowired
     VariantRepository variantRepository;
 
+    @Autowired
+    CustomRepositories customRepositories;
+
     @GetMapping("/all/make")
     public List<Make>  gatAllMakeTypes(){
         return  makeRepository.findAll();
     }
 
-    @GetMapping("/models")
-    public List<Model> getModelsByMake(@RequestParam("make") String make){
-      return modelRepository.findByMake(make);
+    @GetMapping
+    public List<Model> getAll(@RequestParam("make") String make){
+        return modelRepository.findByMake(make);
     }
 
+    @GetMapping("/all")
+    public List<Model> getMakeByName(){
+        return customRepositories.getAllModels();
+    }
+
+    @PutMapping
+    public List<Model> getAllModels(@RequestBody ModelsFilter filter){
+        return customRepositories.getAllModels(filter);
+    }
     @GetMapping("/variants")
     public List<Variant> getVariantsByModel(@RequestParam("model") String model){
         return variantRepository.findByModel(model);
