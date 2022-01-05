@@ -2,6 +2,7 @@ package org.external.controller;
 
 import org.models.core.dao.SearchFilterRepository;
 import org.models.core.dao.SearchRepository;
+import org.models.core.domain.Car;
 import org.models.core.domain.Vehicle;
 import org.models.core.enums.AutomobileType;
 import org.models.core.enums.VehicleStatus;
@@ -24,7 +25,11 @@ public class VehicleSearchController {
 
     @GetMapping("/all")
     List<Vehicle> getAllVehicles(@RequestParam("type") AutomobileType type){
-        return searchRepository.findByAutomobileTypeAndStatus(type,VehicleStatus.UNSOLD);
+        return searchRepository.findByAutomobileTypeAndStatus(AutomobileType.BIKE,VehicleStatus.UNSOLD);
+    }
+    @GetMapping("/cars")
+    List<Vehicle> getAllUnsoldCars(){
+        return searchRepository.findByAutomobileType(AutomobileType.CAR);
     }
 
 
