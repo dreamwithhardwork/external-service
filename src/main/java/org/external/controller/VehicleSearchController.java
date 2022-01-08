@@ -25,7 +25,7 @@ public class VehicleSearchController {
 
     @GetMapping("/all")
     List<Vehicle> getAllVehicles(@RequestParam("type") AutomobileType type){
-        return searchRepository.findByAutomobileTypeAndStatus(AutomobileType.BIKE,VehicleStatus.UNSOLD);
+        return searchRepository.findByAutomobileTypeAndStatus(type,VehicleStatus.UNSOLD);
     }
     @GetMapping("/cars")
     List<Vehicle> getAllUnsoldCars(){
