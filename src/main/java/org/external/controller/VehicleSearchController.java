@@ -2,6 +2,7 @@ package org.external.controller;
 
 import org.models.core.dao.SearchFilterRepository;
 import org.models.core.dao.SearchRepository;
+import org.models.core.dao.VehicleRepository;
 import org.models.core.domain.Vehicle;
 import org.models.core.enums.AutomobileType;
 import org.models.core.enums.VehicleStatus;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/vehicle")
@@ -21,11 +24,21 @@ public class VehicleSearchController {
     @Autowired
     SearchFilterRepository searchFilterRepository;
 
+    @Autowired
+    VehicleRepository vehicleRepository;
+
 
     @GetMapping("/all")
     List<Vehicle> getAllVehicles(){
         return searchRepository.findByAutomobileType(AutomobileType.CAR);
     }
+
+    @PostMapping("/add")
+    public Vehicle add(@RequestBody @Valid Vehicle vehicle){
+        return vehicleRepository.save(vehicle);
+    }
+
+
     @GetMapping("/cars")
     List<Vehicle> getAllCarsByStatus(@RequestParam("status") VehicleStatus vehicleStatus){
         return searchRepository.findByAutomobileTypeAndStatus(AutomobileType.CAR, vehicleStatus);
