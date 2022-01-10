@@ -45,24 +45,33 @@ public class MakeModelController {
         return modelRepository.findByMake(make);
     }
 
-    @GetMapping("/all/models")
-    public List<Model> getMakeByName(){
-        return customRepositories.getAllModels();
-    }
-
-    @GetMapping("/make-model")
-    public Map<String, Map<String, Set<String>>> getMakeModelList(){
-        return properties.getMakemodelvariants();
-    }
 
     @GetMapping("/model/{name}")
     public Model getModelByName(@PathVariable("name") String name){
-       return customRepositories.getModelByName(name);
+       return modelRepository.findOneByName(name);
+    }
+
+    @GetMapping("/make/{name}")
+    public Make getMakeByName(@PathVariable("name") String name){
+        return makeRepository.findOneByName(name);
     }
 
     @PutMapping
     public List<Model> getAllModelsByFilter(@RequestBody ModelsFilter filter){
         return customRepositories.getAllModels(filter);
     }
+
+
+    @PostMapping("/make")
+    public Make saveOrUpdate(@RequestBody Make make){
+        return makeRepository.save(make);
+    }
+
+    @PostMapping("/model")
+    public Model saveOrUpdate(@RequestBody Model model){
+        return modelRepository.save(model);
+    }
+
+
 
 }

@@ -32,12 +32,5 @@ public class VarinatController {
         return variantRepository.save(variant);
     }
 
-    @DeleteMapping
-    public Boolean delete(@RequestParam("id") String id){
-        variantRepository.deleteById(id);
-        return true;
-
-    }
-
 
 }
