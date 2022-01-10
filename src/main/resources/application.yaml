@@ -31,6 +31,6 @@ automobile:
 spring:
   data:
     mongodb:
-      uri: ${DATA_SOURCE}
+      uri: mongodb+srv://nai:pass@nai-v5nji.gcp.mongodb.net/test?retryWrites=true&w=majority
 server:
   port: 8080

@@ -5,6 +5,7 @@ import org.models.core.dao.SearchRepository;
 import org.models.core.dao.VehicleRepository;
 import org.models.core.domain.Vehicle;
 import org.models.core.enums.AutomobileType;
+import org.models.core.enums.BodyType;
 import org.models.core.enums.VehicleStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -83,7 +84,7 @@ public class VehicleSearchController {
                                  @RequestParam("make") Optional<String> make, @RequestParam("model") Optional<String> model,
                                  @RequestParam("fromPrice") Optional<Float> minPrice, @RequestParam("toPrice") Optional<Float> maxPrice ,
                                  @RequestParam("fromMileage") Optional<Integer> minMileage, @RequestParam("toMileage") Optional<Integer> maxMileage
-            , @RequestParam("type") AutomobileType type){
+            , @RequestParam("type") AutomobileType type , @RequestParam("bodyType") List<BodyType> bodyTypes){
         Map<String,Object> filter = new HashMap<>();
         filter.put("color",color.orElse(null));
         filter.put("year",year.orElse(null));
