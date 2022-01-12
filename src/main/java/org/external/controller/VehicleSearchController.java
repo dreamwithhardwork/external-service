@@ -7,6 +7,9 @@ import org.models.core.domain.Vehicle;
 import org.models.core.enums.AutomobileType;
 import org.models.core.enums.BodyType;
 import org.models.core.enums.VehicleStatus;
+import org.models.core.properies.BodyTypeProperties;
+import org.models.core.properies.ColorProperties;
+import org.models.core.properies.VehicleProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +30,15 @@ public class VehicleSearchController {
 
     @Autowired
     VehicleRepository vehicleRepository;
+
+    @Autowired
+    BodyTypeProperties bodyTypeProperties;
+
+    @Autowired
+    ColorProperties colorProperties;
+
+    @Autowired
+    VehicleProperties vehicleProperties;
 
 
     @GetMapping("/all")
@@ -97,6 +109,14 @@ public class VehicleSearchController {
         filter.put("automobileType",type.toString());
         filter.put("status", VehicleStatus.UNSOLD);
         return searchFilterRepository.getVehiclesByFilter(filter);
+    }
+
+    @GetMapping("/properties")
+    public Map<String, List<String>> getAllFilterProperties(){
+          Map<String, List<String>> props = new HashMap<>();
+          props.put("colors", colorProperties.getColor());
+          props.put("bodytypes",bodyTypeProperties.getBodytype());
+          return props;
     }
 
 }

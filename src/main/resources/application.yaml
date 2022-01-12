@@ -1,33 +1,34 @@
-make: ford,hyundai,kia,maruthi
 automobile:
-  make:
-    - hyundai
-    - kia
-    - Chevrolet
-    - Datsun
-    - Fiat
-    - Ford
-    - Honda
-    - Isuzu
-    - Jeep
-    - Mahindra
-    - Maruti Suzuki
-    - MG Motors
-    - Mitsubishi
-    - Nissan
-    - Renault
-    - Skoda
-    - Ssangyong
-    - Tata
-    - Toyata
-    - Volkswagen
-  models:
-    hyundai:
-      - verna
-      - creta
-    kia:
-      - seltos
-      - sonet
+  color:
+    - White
+    - Black
+    - Silver
+    - Red
+    - Blue
+    - Grey
+    - Beige
+    - Brown
+    - Yellow
+    - Green
+    - Purple
+    - Maroon
+  bodytype:
+    - Sedan
+    - Hatch
+    - Coupe
+    - Luxury
+    - Wagon
+    - SUV
+    - XUV
+    - MUV
+  fueltype:
+    - Petrol
+    - Diesel
+    - Electric
+    -
+
+
+
 spring:
   data:
     mongodb:
