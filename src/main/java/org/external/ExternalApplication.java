@@ -1,5 +1,7 @@
 package org.external;
 
+import org.models.core.dao.CustomRepositories;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -20,8 +22,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ConfigurationPropertiesScan("org.models.core.properies")
 public class ExternalApplication {
 
+	@Autowired
+	CustomRepositories customRepositories;
+
 	public static void main(String[] args) {
+
 		SpringApplication.run(ExternalApplication.class, args);
+
 	}
 
 	@Bean

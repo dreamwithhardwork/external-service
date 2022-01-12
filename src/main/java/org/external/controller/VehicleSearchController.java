@@ -1,8 +1,10 @@
 package org.external.controller;
 
+import org.models.core.dao.CustomRepositories;
 import org.models.core.dao.SearchFilterRepository;
 import org.models.core.dao.SearchRepository;
 import org.models.core.dao.VehicleRepository;
+import org.models.core.domain.Make;
 import org.models.core.domain.Vehicle;
 import org.models.core.enums.AutomobileType;
 import org.models.core.enums.BodyType;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -31,6 +34,9 @@ public class VehicleSearchController {
 
     @Autowired
     VehicleProperties vehicleProperties;
+
+    @Autowired
+    CustomRepositories customRepositories;
 
 
     @GetMapping("/all")
@@ -111,6 +117,11 @@ public class VehicleSearchController {
           props.put("Transmission", vehicleProperties.getTransmission());
           props.put("Fuel Type",vehicleProperties.getFueltype());
           return props;
+    }
+
+    @GetMapping("/all-propertie")
+    public VehicleProperties getAllMakeModel(){
+        return vehicleProperties;
     }
 
 }
