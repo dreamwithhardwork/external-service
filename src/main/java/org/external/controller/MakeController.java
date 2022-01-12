@@ -24,7 +24,6 @@ public class MakeController {
         return makeRepository.findOneByName(name);
     }
 
-
     @PostMapping
     public Make saveOrUpdate(@RequestBody Make make){
         return makeRepository.save(make);

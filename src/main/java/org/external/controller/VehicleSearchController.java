@@ -114,8 +114,10 @@ public class VehicleSearchController {
     @GetMapping("/properties")
     public Map<String, List<String>> getAllFilterProperties(){
           Map<String, List<String>> props = new HashMap<>();
-          props.put("colors", colorProperties.getColor());
-          props.put("bodytypes",bodyTypeProperties.getBodytype());
+          props.put("Colors", vehicleProperties.getColor());
+          props.put("Body Type",vehicleProperties.getBodytype());
+          props.put("Transmission", vehicleProperties.getTransmission());
+          props.put("Fuel Type",vehicleProperties.getFueltype());
           return props;
     }
 

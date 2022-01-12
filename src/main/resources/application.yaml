@@ -25,7 +25,10 @@ automobile:
     - Petrol
     - Diesel
     - Electric
-    -
+    - CNG
+  transmission:
+    - Automatic
+    - Manual
 
 
 
