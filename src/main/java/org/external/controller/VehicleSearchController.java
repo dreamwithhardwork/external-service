@@ -32,12 +32,6 @@ public class VehicleSearchController {
     VehicleRepository vehicleRepository;
 
     @Autowired
-    BodyTypeProperties bodyTypeProperties;
-
-    @Autowired
-    ColorProperties colorProperties;
-
-    @Autowired
     VehicleProperties vehicleProperties;
 
 
