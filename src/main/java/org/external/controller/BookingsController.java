@@ -16,7 +16,15 @@ public class BookingsController {
     @Autowired
     BookingRepository bookingRepository;
 
+   @PostMapping
+    public Booking save(@RequestBody Booking booking){
+      return bookingRepository.save(booking);
+   }
 
+   @GetMapping
+    public List<Booking> getAllBookings(){
+       return bookingRepository.findAll();
+   }
 
 
 }
