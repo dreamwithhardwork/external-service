@@ -94,7 +94,7 @@ public class VehicleSearchController {
                                  @RequestParam("make") Optional<String> make, @RequestParam("model") Optional<String> model,
                                  @RequestParam("fromPrice") Optional<Float> minPrice, @RequestParam("toPrice") Optional<Float> maxPrice ,
                                  @RequestParam("fromMileage") Optional<Integer> minMileage, @RequestParam("toMileage") Optional<Integer> maxMileage
-            , @RequestParam("type") AutomobileType type , @RequestParam("bodyType") List<BodyType> bodyTypes){
+            , @RequestParam("type") AutomobileType type , @RequestParam(value = "bodyType", required = false) List<BodyType> bodyTypes){
         Map<String,Object> filter = new HashMap<>();
         filter.put("color",color.orElse(null));
         filter.put("year",year.orElse(null));
