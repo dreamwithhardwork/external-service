@@ -4,6 +4,7 @@ import org.models.core.dao.CustomRepositories;
 import org.models.core.dao.ModelRepository;
 import org.models.core.domain.Model;
 import org.models.core.domain.ModelsFilter;
+import org.models.core.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class ModelController {
 
     @PostMapping
     public Model saveOrUpdate(@RequestBody Model model){
+        model.set_idname(Util.generateIdFromUniqueName(model.getName()));
         return modelRepository.save(model);
     }
 }

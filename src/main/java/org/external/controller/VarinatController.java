@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.models.core.dao.VariantRepository;
 import org.models.core.domain.Variant;
+import org.models.core.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,8 @@ public class VarinatController {
     // to be moved to seperate service
     @PostMapping
     public Variant save(@RequestBody Variant variant){
+        variant.set_variantName(Util.generateIdFromUniqueName(
+                variant.getVariantName()+variant.getFromYear()));
         return variantRepository.save(variant);
     }
 

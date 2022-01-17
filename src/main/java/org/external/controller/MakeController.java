@@ -2,6 +2,7 @@ package org.external.controller;
 
 import org.models.core.dao.MakeRepository;
 import org.models.core.domain.Make;
+import org.models.core.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class MakeController {
 
     @PostMapping
     public Make saveOrUpdate(@RequestBody Make make){
+        make.set_name(Util.generateIdFromUniqueName(make.getName()+make.getType().name()));
         return makeRepository.save(make);
     }
 }
